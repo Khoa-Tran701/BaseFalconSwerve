@@ -5,7 +5,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+//import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.button.CommandJoystick;
+
 
 import frc.robot.autos.*;
 import frc.robot.commands.*;
@@ -19,7 +22,7 @@ import frc.robot.subsystems.*;
  */
 public class RobotContainer {
     /* Controllers */
-    private final Joystick driver = new Joystick(0);
+    private final CommandJoystick driver = new CommandJoystick(0);
 
     /* Drive Controls */
     private final int translationAxis = Joystick.AxisType.kY.value;
@@ -27,8 +30,8 @@ public class RobotContainer {
     private final int rotationAxis = Joystick.AxisType.kZ.value;
 
     /* Driver Buttons */
-    private final JoystickButton zeroGyro = new JoystickButton(driver, 11);
-    private final JoystickButton robotCentric = new JoystickButton(driver, 12);
+    private final Trigger zeroGyro = driver.button(11);
+    private final Trigger robotCentric = driver.button(12);
 
     /* Subsystems */
     private final Swerve s_Swerve = new Swerve();
