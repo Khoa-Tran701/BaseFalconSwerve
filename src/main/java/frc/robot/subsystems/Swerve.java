@@ -102,7 +102,7 @@ public class Swerve extends SubsystemBase {
     }
 
     public void zeroGyro(){
-        gyro.zeroYaw();
+        gyro.reset();
     }
 
     public Rotation2d getYaw() {
@@ -118,6 +118,7 @@ public class Swerve extends SubsystemBase {
     @Override
     public void periodic(){
         swerveOdometry.update(getYaw(), getModulePositions());  
+        SmartDashboard.putNumber("Swerve Yaw", gyro.getYaw());
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
