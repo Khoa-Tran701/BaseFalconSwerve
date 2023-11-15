@@ -16,19 +16,19 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 //import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import com.kauailabs.navx.frc.AHRS;
+
+import com.ctre.phoenix.sensors.Pigeon2;
 
 public class Swerve extends SubsystemBase {
     public SwerveDriveOdometry swerveOdometry;
     public SwerveModule[] mSwerveMods;
-    public AHRS gyro;
+    public Pigeon2 gyro;
 
     public Swerve() {
-        gyro = new AHRS(Port.kMXP);
-        //gyro.configFactoryDefault();
+        gyro = new Pigeon2(Constants.Swerve.pigeonID);
+        gyro.configFactoryDefault();
         zeroGyro();
 
         mSwerveMods = new SwerveModule[] {
@@ -102,11 +102,11 @@ public class Swerve extends SubsystemBase {
     }
 
     public void zeroGyro(){
-        gyro.reset();
+        gyro.setYaw(0);
     }
 
     public Rotation2d getYaw() {
-        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(gyro.getYaw());
+        return (Constants.Swerve.invertGyro) ? Rotation2d.fromDegrees(360 - gyro.getYaw()) : Rotation2d.fromDegrees(-gyro.getYaw());
     }
 
     public void resetModulesToAbsolute(){
@@ -117,8 +117,9 @@ public class Swerve extends SubsystemBase {
 
     @Override
     public void periodic(){
+     
         swerveOdometry.update(getYaw(), getModulePositions());  
-        SmartDashboard.putNumber("Swerve Yaw", gyro.getYaw());
+        SmartDashboard.putNumber("Swerve Yaw", -gyro.getYaw());
 
         for(SwerveModule mod : mSwerveMods){
             SmartDashboard.putNumber("Mod " + mod.moduleNumber + " Cancoder", mod.getCanCoder().getDegrees());
